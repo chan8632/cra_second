@@ -1,23 +1,40 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
 
 function App() {
+  const [todo, setTodo] = useState("");
+  const [todoList, setTodoList] = useState([]);
+  const onSubmit = (event) => {
+    // 아무것도 없을 때 경우
+    if (todo === "") {
+      return;
+    }
+    event.preventDefault();
+    setTodoList((curList) => [todo, ...curList]);
+    //엔터 시 입력값 없애고 새로 시작.
+    setTodo("");
+    console.log(todoList);
+  };
+  const writeTodo = (event) => {
+    setTodo(event.target.value);
+  };
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>My To Dos</h1>
+      <form onSubmit={onSubmit}>
+        <input
+          value={todo}
+          onChange={writeTodo}
+          placeholder="todoAdd"
+          type="text"
+        />
+        <button type="submit">Add To Do</button>
+      </form>
+      <br />
+      <ul>
+        {todoList.map((todo, idx) => (
+          <li key={idx}>{todo}</li>
+        ))}
+      </ul>
     </div>
   );
 }
